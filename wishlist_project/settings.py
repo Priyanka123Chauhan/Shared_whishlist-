@@ -18,6 +18,9 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # Installed apps
 INSTALLED_APPS = [
+    'rest_framework',
+    'whitenoise.runserver_nostatic',  # must be above 'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
     'wishlist',
     'corsheaders',
     'rest_framework',
@@ -31,6 +34,7 @@ INSTALLED_APPS = [
 
 # Middleware
 MIDDLEWARE = [
+   'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
