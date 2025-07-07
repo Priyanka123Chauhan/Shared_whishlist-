@@ -6,13 +6,79 @@ from .serializers import WishlistSerializer, ProductSerializer
 from .supabase_client import supabase
 from gotrue.errors import AuthApiError
 
+# wishlist/views.py
+from rest_framework import viewsets
+from .models import Wishlist
+from .serializers import WishlistSerializer
+import logging
+
+logger = logging.getLogger(__name__)
+
 class WishlistViewSet(viewsets.ModelViewSet):
     queryset = Wishlist.objects.all()
     serializer_class = WishlistSerializer
 
+    def list(self, request, *args, **kwargs):
+        logger.warning("Wishlist list hit by %s", request.user)
+        try:
+            return super().list(request, *args, **kwargs)
+        except Exception as e:
+            logger.exception("Error in WishlistViewSet.list: %s", e)
+            raise e
+
+    def create(self, request, *args, **kwargs):
+        logger.warning("Wishlist create hit by %s", request.user)
+        try:
+            return super().create(request, *args, **kwargs)
+        except Exception as e:
+            logger.exception("Error in WishlistViewSet.create: %s", e)
+            raise e
+
+
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+    def list(self, request, *args, **kwargs):
+        logger.warning("Product list hit by %s", request.user)
+        try:
+            return super().list(request, *args, **kwargs)
+        except Exception as e:
+            logger.exception("Error in ProductViewSet.list: %s", e)
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def create(self, request, *args, **kwargs):
+        logger.warning("Product create hit by %s", request.user)
+        try:
+            return super().create(request, *args, **kwargs)
+        except Exception as e:
+            logger.exception("Error in ProductViewSet.create: %s", e)
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def retrieve(self, request, *args, **kwargs):
+        logger.warning("Product retrieve hit by %s", request.user)
+        try:
+            return super().retrieve(request, *args, **kwargs)
+        except Exception as e:
+            logger.exception("Error in ProductViewSet.retrieve: %s", e)
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def update(self, request, *args, **kwargs):
+        logger.warning("Product update hit by %s", request.user)
+        try:
+            return super().update(request, *args, **kwargs)
+        except Exception as e:
+            logger.exception("Error in ProductViewSet.update: %s", e)
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def destroy(self, request, *args, **kwargs):
+        logger.warning("Product delete hit by %s", request.user)
+        try:
+            return super().destroy(request, *args, **kwargs)
+        except Exception as e:
+            logger.exception("Error in ProductViewSet.destroy: %s", e)
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 @api_view(['POST'])
 def signup(request):
